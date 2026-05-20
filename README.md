@@ -6,15 +6,11 @@
 
 主站地址：
 
-```text
-https://resumegeneration.cc.cd
-```
+[https://resumegeneration.cc.cd](https://resumegeneration.cc.cd)
 
 备用地址：
 
-```text
-https://resumegeneration.pages.dev
-```
+[https://resumegeneration.pages.dev](https://resumegeneration.pages.dev)
 
 打开网页后即可使用，无需注册账号。
 
