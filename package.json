@@ -1,0 +1,25 @@
+{
+  "name": "markdown-resume-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/build-resume.mjs",
+    "dev": "vite --host 127.0.0.1 --strictPort",
+    "prebuild": "node scripts/build-resume.mjs",
+    "build": "tsc && vite build",
+    "deploy:cloudflare": "npm run build && npx wrangler pages deploy dist --project-name resumegeneration",
+    "cf:dev": "npm run build && npx wrangler pages dev dist",
+    "prepreview": "node scripts/build-resume.mjs",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
+  }
+}

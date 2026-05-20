@@ -1,0 +1,15 @@
+# Copy this file to .dev.vars when testing Cloudflare Pages Functions locally.
+# Do not commit real keys.
+
+# Optional: Bing Image Search via Azure/Bing Search API
+BING_IMAGE_SEARCH_KEY=
+BING_IMAGE_SEARCH_ENDPOINT=https://api.bing.microsoft.com/v7.0/images/search
+
+# Optional: SerpAPI Google Images fallback
+SERPAPI_KEY=
+
+# Optional: SearchAPI.io Google Images fallback
+SEARCHAPI_KEY=
+
+# Optional: Brave Image Search fallback
+BRAVE_SEARCH_API_KEY=

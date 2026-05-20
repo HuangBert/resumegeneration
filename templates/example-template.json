@@ -1,0 +1,15 @@
+{
+  "id": "custom-warm-red",
+  "name": "示例暖红模板",
+  "description": "导入模板示例：暖红强调色，适合偏正式但更醒目的简历。",
+  "className": "template-custom",
+  "variables": {
+    "template-accent": "#b91c1c",
+    "template-accent-dark": "#7f1d1d",
+    "template-heading-font": "\"STSong\", \"Songti SC\", \"SimSun\", serif",
+    "template-body-font": "\"Microsoft YaHei\", \"PingFang SC\", Arial, sans-serif",
+    "template-section-rule": "3px",
+    "template-title-size": "30px",
+    "template-section-title-size": "18px"
+  }
+}
