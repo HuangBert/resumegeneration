@@ -1,6 +1,20 @@
 # Markdown Resume Generator
 
-一个本地可双击启动、也可部署到 GitHub Pages 的中文简历生成器。
+一个可在线使用、可本地双击启动、也可部署到 Cloudflare Pages 的中文简历生成器。
+
+## 在线工具
+
+在线访问：
+
+```text
+https://resumegeneration.cc.cd
+```
+
+也可以访问 Cloudflare Pages 默认域名：
+
+```text
+https://resumegeneration.pages.dev
+```
 
 内置示例内容均为虚构占位信息，默认头像为 AI 生成的虚构证件照，仅用于演示版式。
 
