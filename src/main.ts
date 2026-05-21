@@ -15,6 +15,8 @@ type ResumeState = {
   phone: string;
   email: string;
   photo: string;
+  photoScale: number;
+  schoolLogoScale: number;
   sections: Record<SectionKey, string>;
 };
 
@@ -48,6 +50,8 @@ const defaultState: ResumeState = {
   phone: "138****0000",
   email: "zhangsan@example.com",
   photo: "/assets/placeholder-id-photo.png",
+  photoScale: 1,
+  schoolLogoScale: 1,
   sections: {
     education: [
       "2022.09-2025.06 | 示例大学 | 管理学院 | 数据管理 | 硕士",
@@ -179,7 +183,10 @@ function loadState(): ResumeState {
   }
 
   try {
-    return { ...structuredClone(defaultState), ...JSON.parse(raw) } as ResumeState;
+    const savedState = { ...structuredClone(defaultState), ...JSON.parse(raw) } as ResumeState;
+    savedState.photoScale = normalizeImageScale(savedState.photoScale);
+    savedState.schoolLogoScale = normalizeImageScale(savedState.schoolLogoScale);
+    return savedState;
   } catch {
     return structuredClone(defaultState);
   }
@@ -216,9 +223,23 @@ function getActiveTemplate(): ResumeTemplate {
 }
 
 function templateStyle(template: ResumeTemplate): string {
-  return Object.entries(template.variables)
+  const imageVariables = {
+    "photo-scale": String(normalizeImageScale(state.photoScale)),
+    "school-logo-scale": String(normalizeImageScale(state.schoolLogoScale))
+  };
+
+  return Object.entries({ ...template.variables, ...imageVariables })
     .map(([key, value]) => `--${escapeHtml(key)}:${escapeHtml(value)}`)
     .join(";");
+}
+
+function normalizeImageScale(value: unknown): number {
+  const numberValue = Number(value);
+  if (!Number.isFinite(numberValue)) {
+    return 1;
+  }
+
+  return Math.min(2, Math.max(0.5, Number(numberValue.toFixed(2))));
 }
 
 function isValidTemplate(template: ResumeTemplate): boolean {
@@ -312,7 +333,7 @@ function renderPreview(): string {
 
 type TextFieldKey = keyof Omit<
   ResumeState,
-  "sections" | "photo" | "schoolLogo" | "schoolLogoSchool" | "schoolLogoSource"
+  "sections" | "photo" | "photoScale" | "schoolLogo" | "schoolLogoScale" | "schoolLogoSchool" | "schoolLogoSource"
 >;
 
 function field(label: string, id: TextFieldKey, type = "text"): string {
@@ -329,6 +350,17 @@ function textarea(label: string, key: SectionKey): string {
     <label class="field field-wide">
       <span>${label}</span>
       <textarea id="${key}" rows="8">${escapeHtml(state.sections[key])}</textarea>
+    </label>
+  `;
+}
+
+function scaleControl(label: string, id: "photoScale" | "schoolLogoScale"): string {
+  const value = normalizeImageScale(state[id]);
+  return `
+    <label class="scale-control">
+      <span>${label}</span>
+      <input id="${id}" type="range" min="0.5" max="2" step="0.01" value="${value}" />
+      <output id="${id}Value">${Math.round(value * 100)}%</output>
     </label>
   `;
 }
@@ -384,6 +416,7 @@ function renderApp() {
             </label>
             <span id="schoolLogoStatus">${escapeHtml(schoolLogoStatusText)}</span>
           </div>
+          ${scaleControl("校徽缩放", "schoolLogoScale")}
           ${renderLogoCandidates()}
           ${field("姓名", "name")}
           ${field("求职意向", "intention")}
@@ -401,6 +434,7 @@ function renderApp() {
             <input id="photo" type="file" accept="image/*" />
             <span>${state.photo ? "更换照片" : "选择证件照或头像"}</span>
           </label>
+          ${scaleControl("照片缩放", "photoScale")}
         </section>
 
         <section class="step-card">
@@ -474,6 +508,8 @@ function bindEvents() {
   bindTextarea("research");
   bindTextarea("practice");
   bindTextarea("skills");
+  bindScaleControl("photoScale");
+  bindScaleControl("schoolLogoScale");
 
   document.querySelector<HTMLInputElement>("#photo")?.addEventListener("change", async (event) => {
     const input = event.currentTarget as HTMLInputElement;
@@ -582,6 +618,24 @@ function bindTextarea(key: SectionKey) {
   document.querySelector<HTMLTextAreaElement>(`#${key}`)?.addEventListener("input", (event) => {
     const textarea = event.currentTarget as HTMLTextAreaElement;
     state.sections[key] = textarea.value;
+    saveState();
+    updatePreview();
+  });
+}
+
+function bindScaleControl(id: "photoScale" | "schoolLogoScale") {
+  document.querySelector<HTMLInputElement>(`#${id}`)?.addEventListener("input", (event) => {
+    const input = event.currentTarget as HTMLInputElement;
+    const value = normalizeImageScale(input.value);
+    state[id] = value;
+    input.value = String(value);
+
+    const output = document.querySelector<HTMLOutputElement>(`#${id}Value`);
+    if (output) {
+      output.value = `${Math.round(value * 100)}%`;
+      output.textContent = output.value;
+    }
+
     saveState();
     updatePreview();
   });

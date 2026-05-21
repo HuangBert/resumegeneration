@@ -210,6 +210,28 @@ button {
   font-weight: 700;
 }
 
+.scale-control {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 44px;
+  gap: 10px;
+  align-items: center;
+  margin: -4px 0 14px;
+  color: #dbeafe;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.scale-control input {
+  width: 100%;
+  accent-color: #7dd3fc;
+}
+
+.scale-control output {
+  color: #b6c7d8;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .upload-box {
   display: grid;
   place-items: center;
@@ -335,6 +357,8 @@ button {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform: scale(var(--school-logo-scale));
+  transform-origin: center;
 }
 
 .school-mark strong {
@@ -371,6 +395,8 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(var(--photo-scale));
+  transform-origin: center;
 }
 
 .identity {
