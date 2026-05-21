@@ -11,6 +11,14 @@
   --panel: #ffffff;
   --line: #cbd4dd;
   --muted: #5e6875;
+  --app-bg: #eef1f4;
+  --panel-bg: #17202b;
+  --panel-text: #ffffff;
+  --panel-muted: #b6c7d8;
+  --panel-card: rgba(255, 255, 255, 0.06);
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --preview-bg: #eef1f4;
+  --preview-toolbar: #344355;
 }
 
 * {
@@ -21,6 +29,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  background: var(--app-bg);
 }
 
 button,
@@ -44,6 +53,18 @@ button {
   display: grid;
   grid-template-columns: 420px minmax(0, 1fr);
   min-height: 100vh;
+  background: var(--app-bg);
+}
+
+.app-shell[data-theme="dark"] {
+  --app-bg: #10141a;
+  --panel-bg: #0d1117;
+  --panel-text: #f4f7fb;
+  --panel-muted: #aab6c4;
+  --panel-card: rgba(255, 255, 255, 0.07);
+  --panel-border: rgba(255, 255, 255, 0.13);
+  --preview-bg: #161b22;
+  --preview-toolbar: #d8e1ec;
 }
 
 .builder-panel {
@@ -52,8 +73,8 @@ button {
   height: 100vh;
   overflow: auto;
   padding: 24px;
-  background: #17202b;
-  color: #ffffff;
+  background: var(--panel-bg);
+  color: var(--panel-text);
 }
 
 .panel-heading {
@@ -80,7 +101,8 @@ button {
   padding: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--panel-card);
+  border-color: var(--panel-border);
 }
 
 .step-card h2 {
@@ -280,18 +302,29 @@ button {
 .preview-panel {
   min-width: 0;
   padding: 28px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: var(--preview-bg);
 }
 
 .preview-toolbar {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  width: 860px;
+  width: min(100%, 860px);
   max-width: 100%;
   margin: 0 auto 14px;
-  color: var(--muted);
+  color: var(--preview-toolbar);
   font-size: 14px;
+}
+
+.resume-viewport {
+  width: min(100%, 860px);
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  padding-bottom: 12px;
 }
 
 .resume-page {
@@ -320,6 +353,34 @@ button {
   font-family: var(--template-body-font);
   box-shadow: 0 24px 80px rgba(17, 24, 39, 0.18);
   transform-origin: top center;
+}
+
+.resume-theme-dark {
+  background: #101820;
+  color: #f4f8fb;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+.resume-theme-dark .identity {
+  border-color: color-mix(in srgb, var(--template-accent) 60%, #ffffff 20%);
+}
+
+.resume-theme-dark .template-section h2,
+.resume-theme-dark .school-mark strong,
+.resume-theme-dark .identity h1 {
+  color: #f8fbff;
+}
+
+.resume-theme-dark .school-mark span,
+.resume-theme-dark .identity p,
+.resume-theme-dark .template-section p {
+  color: #dbe5ef;
+}
+
+.resume-theme-dark .school-seal,
+.resume-theme-dark .photo-frame {
+  background: #172331;
+  border-color: color-mix(in srgb, var(--template-accent) 55%, #ffffff 18%);
 }
 
 .resume-content {
@@ -529,9 +590,8 @@ button {
     padding: 18px 10px;
   }
 
-  .resume-page {
-    transform: scale(0.86);
-    margin-bottom: -170px;
+  .resume-viewport {
+    width: 100%;
   }
 }
 
@@ -541,14 +601,19 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .resume-page {
-    transform: scale(0.48);
-    margin-left: calc(50% - 430px);
-    margin-bottom: -620px;
+  .preview-toolbar {
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 8px;
   }
 
-  .preview-toolbar {
-    padding: 0 8px;
+  .resume-viewport {
+    width: 100%;
+    padding-inline: 8px;
+  }
+
+  .resume-page {
+    margin: 0;
   }
 }
 
@@ -594,6 +659,13 @@ button {
     margin: 0;
     padding: 0;
     overflow: hidden;
+  }
+
+  .resume-viewport {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
   .resume-page {
